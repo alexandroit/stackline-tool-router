@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { access, mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,6 +13,11 @@ const packDirectory = path.join(work, 'pack');
 const appDirectory = path.join(work, 'app');
 
 try {
+  try {
+    await access(path.join(root, 'dist', 'index.d.ts'));
+  } catch {
+    run(process.execPath, ['scripts/build.mjs'], root);
+  }
   await mkdir(packDirectory);
   await mkdir(appDirectory);
   const packOutput = run('npm', ['pack', '--ignore-scripts', '--json', '--pack-destination', packDirectory], root);
