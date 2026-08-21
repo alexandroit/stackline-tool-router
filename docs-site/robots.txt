@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /docs/vanilla/tool-router/
+
+Sitemap: https://alexandro.net/sitemap.xml

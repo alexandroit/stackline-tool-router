@@ -1,0 +1,12 @@
+node_modules/
+coverage/
+dist/
+site-dist/
+release/
+*.tgz
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+PROJECT_MEMORY.local.md

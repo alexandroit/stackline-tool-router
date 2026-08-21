@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@stackline/tool-router - Local AI tool discovery</title>
+  <meta name="description" content="Route MCP, OpenAI, Anthropic, and Gemini tool catalogs locally with deterministic ranking, typo tolerance, budgets, and zero runtime dependencies.">
+  <meta name="keywords" content="AI tool routing, tool search, MCP tools, OpenAI function calling, Anthropic tools, Gemini tools, BM25, TypeScript, zero dependency">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta name="author" content="Alexandro Paixao Marques">
+  <link rel="icon" href="./assets/tool-routing.webp" type="image/webp">
+  <link rel="canonical" href="https://alexandro.net/docs/vanilla/tool-router/">
+  <link rel="alternate" type="text/plain" href="./llms.txt" title="LLM summary">
+  <link rel="alternate" type="text/plain" href="./llms-full.txt" title="LLM reference">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="@stackline/tool-router">
+  <meta property="og:description" content="Select the right AI tools before the model sees the catalog.">
+  <meta property="og:url" content="https://alexandro.net/docs/vanilla/tool-router/">
+  <meta property="og:image" content="https://alexandro.net/docs/vanilla/tool-router/assets/tool-routing.webp">
+  <meta property="og:image:alt" content="A large tool catalog routed into five selected capabilities">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="@stackline/tool-router">
+  <meta name="twitter:description" content="Zero-dependency local tool discovery for agent catalogs.">
+  <meta name="twitter:image" content="https://alexandro.net/docs/vanilla/tool-router/assets/tool-routing.webp">
+  <meta property="article:tag" content="MCP">
+  <meta property="article:tag" content="AI agents">
+  <meta property="article:tag" content="npm">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "@stackline/tool-router",
+    "description": "Zero-dependency AI tool discovery and routing for MCP, OpenAI, Anthropic, and Gemini catalogs.",
+    "codeRepository": "https://github.com/alexandroit/stackline-tool-router",
+    "programmingLanguage": "JavaScript",
+    "runtimePlatform": ["Node.js", "Browser", "Deno", "Bun"],
+    "license": "https://opensource.org/license/mit",
+    "version": "{{VERSION}}"
+  }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#workbench" aria-label="Tool Router documentation home">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>@stackline/tool-router</span>
+    </a>
+    <nav class="top-links" aria-label="Project links">
+      <span class="version">v{{VERSION}}</span>
+      <a href="https://www.npmjs.com/package/@stackline/tool-router">npm</a>
+      <a href="https://github.com/alexandroit/stackline-tool-router">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="page-shell">
+    <aside class="side-nav" aria-label="Documentation sections">
+      <p class="nav-label">Documentation</p>
+      <a class="active" href="#workbench">Workbench</a>
+      <a href="#install">Install</a>
+      <a href="#formats">Provider formats</a>
+      <a href="#routing">Routing controls</a>
+      <a href="#catalogs">Dynamic catalogs</a>
+      <a href="#benchmark">Evaluation</a>
+      <a href="#api">API</a>
+      <a href="#security">Security</a>
+    </aside>
+
+    <main>
+      <section class="intro" id="workbench">
+        <p class="eyebrow">Local tool discovery</p>
+        <h1>Route the catalog before the model sees it.</h1>
+        <p class="lede">Search names, descriptions, tags, and JSON Schema across provider formats. No model call, vector store, or runtime dependency.</p>
+      </section>
+
+      <section class="workbench" aria-labelledby="workbench-title">
+        <div class="workbench-head">
+          <div>
+            <h2 id="workbench-title">Routing workbench</h2>
+            <p>Change the request or provider format. Results are produced by the published browser bundle.</p>
+          </div>
+          <div class="catalog-count"><strong id="catalog-count">18</strong><span>tools indexed</span></div>
+        </div>
+
+        <div class="control-band">
+          <label class="query-field" for="query">
+            <span>Task request</span>
+            <input id="query" type="search" value="Open a GitHub PR and notify the release channel" autocomplete="off" spellcheck="false">
+          </label>
+          <label class="select-field" for="format">
+            <span>Catalog format</span>
+            <select id="format">
+              <option value="mcp">MCP</option>
+              <option value="openai-responses">OpenAI Responses</option>
+              <option value="openai-chat">OpenAI Chat</option>
+              <option value="anthropic">Anthropic</option>
+              <option value="gemini">Gemini</option>
+            </select>
+          </label>
+          <button class="primary-action" id="route-button" type="button">Route tools</button>
+        </div>
+
+        <div class="option-band">
+          <fieldset class="limit-control">
+            <legend>Maximum tools</legend>
+            <div class="segments" aria-label="Maximum selected tools">
+              <button type="button" data-limit="3">3</button>
+              <button class="selected" type="button" data-limit="5" aria-pressed="true">5</button>
+              <button type="button" data-limit="8">8</button>
+            </div>
+          </fieldset>
+          <label class="toggle"><input id="fuzzy" type="checkbox" checked><span>Typo tolerance</span></label>
+          <label class="toggle"><input id="synonyms" type="checkbox" checked><span>Action synonyms</span></label>
+          <details class="pin-menu">
+            <summary>Always loaded</summary>
+            <div id="pin-list" class="pin-list"></div>
+          </details>
+        </div>
+
+        <div class="metric-strip" aria-live="polite">
+          <div><span>Selected</span><strong id="selected-count">0</strong></div>
+          <div><span>Catalog estimate</span><strong id="catalog-tokens">0</strong></div>
+          <div><span>Selected estimate</span><strong id="selected-tokens">0</strong></div>
+          <div><span>Estimated reduction</span><strong id="reduction">0%</strong></div>
+        </div>
+
+        <div class="result-layout">
+          <div class="results-region">
+            <div class="region-head">
+              <h3>Selected definitions</h3>
+              <span id="result-status" role="status">Ready</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th scope="col">Tool</th><th scope="col">Evidence</th><th scope="col">Score</th><th scope="col">Tokens</th></tr>
+                </thead>
+                <tbody id="results"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="code-region">
+            <div class="region-head">
+              <h3>Request code</h3>
+              <button class="icon-button" id="copy-code" type="button" title="Copy request code" aria-label="Copy request code">Copy</button>
+            </div>
+            <pre><code id="request-code"></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="visual-band" aria-labelledby="why-title">
+        <img src="./assets/tool-routing.webp" width="1440" height="810" alt="Many capability modules passing through a router and emerging as five selected tools">
+        <div class="visual-copy">
+          <p class="eyebrow">One index, bounded context</p>
+          <h2 id="why-title">Keep the capability. Remove the catalog overhead.</h2>
+          <p>The router preserves original provider definitions and returns only the strongest local matches. Explicitly pinned tools remain available for policy-critical operations.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="install">
+        <div class="section-heading"><p class="eyebrow">Start here</p><h2>Install and route</h2></div>
+        <div class="install-line"><code>npm install @stackline/tool-router</code><button class="icon-button" type="button" data-copy="npm install @stackline/tool-router" title="Copy install command" aria-label="Copy install command">Copy</button></div>
+        <pre><code>import { createToolRouter } from '@stackline/tool-router';
+
+const router = createToolRouter(tools);
+const routed = router.route(userMessage, {
+  maxTools: 5,
+  maxEstimatedTokens: 4_000,
+  pinned: ['auth_get_current_user']
+});
+
+await client.responses.create({
+  model: 'your-model',
+  input: userMessage,
+  tools: routed.tools
+});</code></pre>
+      </section>
+
+      <section class="doc-section" id="formats">
+        <div class="section-heading"><p class="eyebrow">Interoperability</p><h2>Use the definitions you already own</h2></div>
+        <p>The adapters locate retrieval fields and preserve each original object. Schema dialects are never silently converted.</p>
+        <div class="table-wrap provider-table">
+          <table>
+            <thead><tr><th scope="col">Format</th><th scope="col">Input schema key</th><th scope="col">Envelope</th></tr></thead>
+            <tbody>
+              <tr><td><span class="provider-dot mcp"></span>MCP</td><td><code>inputSchema</code></td><td>tool array</td></tr>
+              <tr><td><span class="provider-dot openai"></span>OpenAI Responses</td><td><code>parameters</code></td><td><code>{ tools }</code></td></tr>
+              <tr><td><span class="provider-dot openai"></span>OpenAI Chat</td><td><code>function.parameters</code></td><td><code>{ tools }</code></td></tr>
+              <tr><td><span class="provider-dot anthropic"></span>Anthropic</td><td><code>input_schema</code></td><td>tool array</td></tr>
+              <tr><td><span class="provider-dot gemini"></span>Gemini</td><td><code>parameters</code></td><td><code>functionDeclarations</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="doc-section two-column" id="routing">
+        <div>
+          <div class="section-heading"><p class="eyebrow">Control</p><h2>Count, budget, filter, pin</h2></div>
+          <p>Tool count and token estimates are independent controls. Namespace, format, ID, tag, and custom predicates can narrow eligible definitions before scoring.</p>
+        </div>
+        <pre><code>router.route(query, {
+  maxTools: 6,
+  maxEstimatedTokens: 4000,
+  namespaces: ['github', 'slack'],
+  tags: ['write'],
+  pinned: ['auth_current_user'],
+  fallback: 'none'
+});</code></pre>
+      </section>
+
+      <section class="doc-section two-column" id="catalogs">
+        <div>
+          <div class="section-heading"><p class="eyebrow">Live systems</p><h2>Update without rebuilding</h2></div>
+          <p>Document frequencies, field lengths, token estimates, prefixes, and fuzzy lexicon entries are maintained incrementally.</p>
+        </div>
+        <pre><code>const router = createToolRouter([], {
+  onDuplicate: 'replace'
+});
+
+router.add(tool);
+router.remove(toolId);
+router.replace(currentCatalog);
+router.clear();</code></pre>
+      </section>
+
+      <section class="doc-section" id="benchmark">
+        <div class="section-heading"><p class="eyebrow">Transparent baseline</p><h2>Evaluation, not a magic number</h2></div>
+        <div class="benchmark-grid">
+          <div><strong>100%</strong><span>recall@1</span></div>
+          <div><strong>100%</strong><span>recall@5</span></div>
+          <div><strong>85.28%</strong><span>average estimated reduction</span></div>
+          <div><strong>10,000</strong><span>synthetic catalog tools</span></div>
+        </div>
+        <p>The included 30-intent corpus covers twelve product domains. Run <code>npm run benchmark</code> against the source and replace it with representative production queries before setting limits.</p>
+      </section>
+
+      <section class="doc-section" id="api">
+        <div class="section-heading"><p class="eyebrow">Reference</p><h2>Small public surface</h2></div>
+        <dl class="api-list">
+          <div><dt><code>createToolRouter</code></dt><dd>Build a mutable provider-neutral retrieval index.</dd></div>
+          <div><dt><code>search</code></dt><dd>Return ranked matches, score, fields, terms, and original definitions.</dd></div>
+          <div><dt><code>select</code></dt><dd>Return only original definitions.</dd></div>
+          <div><dt><code>route</code></dt><dd>Apply count, budget, filter, fallback, and pinning controls.</dd></div>
+          <div><dt><code>createToolSearch</code></dt><dd>Create a compact provider-shaped discovery function.</dd></div>
+          <div><dt><code>normalizeTool</code></dt><dd>Inspect the immutable retrieval record for one definition.</dd></div>
+        </dl>
+        <p><a href="./reference.md">Read the full package reference</a> or inspect the <a href="./architecture.md">architecture</a>.</p>
+      </section>
+
+      <section class="doc-section security-band" id="security">
+        <div class="section-heading"><p class="eyebrow">Untrusted definitions</p><h2>Bounded by default</h2></div>
+        <p>Own data properties only. No getter execution. Dangerous prototype keys are skipped. Catalog, schema, text, query, expansion, and edit-distance limits are enforced. The runtime has no dependencies and makes no network requests.</p>
+        <a href="https://github.com/alexandroit/stackline-tool-router/security/policy">Security policy</a>
+      </section>
+
+      <section class="resource-panel" aria-labelledby="resources-title">
+        <div><p class="eyebrow">Machine-readable docs</p><h2 id="resources-title">Documentation resources</h2></div>
+        <div class="resource-links">
+          <a href="./llms.txt">llms.txt</a>
+          <a href="./llms-full.txt">llms-full.txt</a>
+          <a href="https://alexandro.net/sitemap.xml">Public sitemap</a>
+        </div>
+      </section>
+
+      <p class="hashtags">#Stackline #ToolRouting #MCP #AIAgents #OpenSource #NPM #AIReadyDocs</p>
+    </main>
+  </div>
+
+  <footer>
+    <span>@stackline/tool-router {{VERSION}} &middot; MIT</span>
+    <a href="https://alexandro.net/sitemap.xml">Sitemap</a>
+  </footer>
+
+  <script src="./assets/stackline-tool-router.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
