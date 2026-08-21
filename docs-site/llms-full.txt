@@ -9,6 +9,8 @@ Install: npm install @stackline/tool-router
 Docs: https://alexandro.net/docs/vanilla/tool-router/
 npm: https://www.npmjs.com/package/@stackline/tool-router
 Source: https://github.com/alexandroit/stackline-tool-router
+Portfolio catalog: https://alexandro.net/docs/open-source/
+Architecture guide: https://alexandro.net/docs/open-source/guides/local-tool-routing/
 
 ## What it does
 

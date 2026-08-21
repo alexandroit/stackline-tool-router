@@ -326,10 +326,18 @@ Detailed runtime and declaration guarantees are in
 ## Documentation
 
 - [Live routing workbench](https://alexandro.net/docs/vanilla/tool-router/)
+- [OpenAI, Anthropic, Gemini, and MCP integrations](docs/INTEGRATIONS.md)
+- [Evaluation and benchmark methodology](docs/BENCHMARKS.md)
+- [Executable provider examples](examples)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Market research](docs/MARKET_RESEARCH.md)
+- [Stackline open-source catalog](https://alexandro.net/docs/open-source/)
 - [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)
+
+Examples are included in the npm tarball and build provider request objects
+without credentials or network calls. This makes format compatibility
+executable before an application connects its own SDK.
 
 ## License
 

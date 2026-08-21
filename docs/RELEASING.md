@@ -17,7 +17,9 @@
    CommonJS, and TypeScript smoke tests.
 4. Push the reviewed commit and wait for GitHub Actions.
 5. Download the CI artifact and compare its package digest.
-6. Publish the same local tarball to public npm.
+6. Run `publish.yml` with the local tarball's SHA-512 hex digest. The trusted
+   workflow rebuilds the reviewed commit, refuses a digest mismatch, and
+   publishes through npm OIDC with provenance.
 7. Download the public npm tarball and compare its digest and contents.
 8. Create the signed version tag and GitHub Release with package, checksums,
    SBOM, and documentation archive.

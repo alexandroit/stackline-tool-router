@@ -5,7 +5,7 @@ import test from 'node:test';
 test('publishes a zero-runtime-dependency dual package with public metadata', async () => {
   const packageJson = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
   assert.equal(packageJson.name, '@stackline/tool-router');
-  assert.equal(packageJson.version, '1.0.0');
+  assert.match(packageJson.version, /^1\.\d+\.\d+$/);
   assert.equal(packageJson.license, 'MIT');
   assert.deepEqual(packageJson.dependencies, undefined);
   assert.equal(packageJson.sideEffects, false);

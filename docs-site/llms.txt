@@ -3,6 +3,8 @@
 Public version: {{VERSION}}
 Install: npm install @stackline/tool-router
 Documentation: https://alexandro.net/docs/vanilla/tool-router/
+Portfolio catalog: https://alexandro.net/docs/open-source/
+Architecture guide: https://alexandro.net/docs/open-source/guides/local-tool-routing/
 Live workbench: https://alexandro.net/docs/vanilla/tool-router/#workbench
 npm: https://www.npmjs.com/package/@stackline/tool-router
 GitHub: https://github.com/alexandroit/stackline-tool-router

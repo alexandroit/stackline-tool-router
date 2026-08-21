@@ -11,6 +11,10 @@ const required = [
   'reference.md',
   'architecture.md',
   'market-research.md',
+  'guides/integrations.md',
+  'guides/benchmarks.md',
+  'examples/openai-chat.mjs',
+  'analytics.js',
   'robots.txt',
   'sitemap.xml',
   'llms.txt',
@@ -27,6 +31,8 @@ const robots = await readFile(new URL('robots.txt', output), 'utf8');
 const sitemap = await readFile(new URL('sitemap.xml', output), 'utf8');
 const llms = await readFile(new URL('llms.txt', output), 'utf8');
 const llmsFull = await readFile(new URL('llms-full.txt', output), 'utf8');
+const integrations = await readFile(new URL('guides/integrations.md', output), 'utf8');
+const benchmarks = await readFile(new URL('guides/benchmarks.md', output), 'utf8');
 const version = JSON.parse(await readFile(new URL('version.json', output), 'utf8'));
 const bundle = await stat(new URL('assets/stackline-tool-router.min.js', output));
 const image = await stat(new URL('assets/tool-routing.webp', output));
@@ -43,12 +49,18 @@ assert.match(robots, /Allow: \/docs\/vanilla\/tool-router\//);
 assert.match(sitemap, /https:\/\/alexandro\.net\/docs\/vanilla\/tool-router\//);
 assert.match(llms, /@stackline\/tool-router/);
 assert.match(llmsFull, /createToolRouter/);
+assert.match(integrations, /OpenAI Chat Completions/);
+assert.match(integrations, /Anthropic Messages/);
+assert.match(benchmarks, /10,000-tool catalog/);
+assert.match(html, /analytics\.js/);
+assert.doesNotMatch(app, /gtag\('event'/);
 assert.doesNotMatch(html, /{{VERSION}}/);
 assert.doesNotMatch(app, /{{VERSION}}/);
 assert.doesNotMatch(llms, /{{VERSION}}/);
 assert.doesNotMatch(llmsFull, /{{VERSION}}/);
 assert.equal(version.name, '@stackline/tool-router');
-assert.equal(version.version, '1.0.0');
+const packageJson = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
+assert.equal(version.version, packageJson.version);
 assert.ok(bundle.size < 35_000, `browser bundle is ${bundle.size} bytes`);
 assert.ok(image.size > 30_000, `documentation visual is only ${image.size} bytes`);
 

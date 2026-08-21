@@ -1,6 +1,6 @@
 {
   "name": "@stackline/tool-router",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Zero-dependency AI tool discovery and routing for MCP, OpenAI, Anthropic, and Gemini catalogs",
   "keywords": [
     "ai",
@@ -60,6 +60,8 @@
   },
   "files": [
     "dist",
+    "docs",
+    "examples",
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "LICENSE",
@@ -74,10 +76,11 @@
     "clean": "node scripts/clean.mjs",
     "build": "node scripts/build.mjs",
     "lint": "eslint . && node scripts/check-markdown.mjs",
-    "test": "npm run build && npm run lint && npm run test:coverage && npm run test:types && npm run test:package && npm run test:install && npm run test:docs",
+    "test": "npm run build && npm run lint && npm run test:coverage && npm run test:types && npm run test:examples && npm run test:package && npm run test:install && npm run test:docs",
     "test:unit": "node --test --test-reporter=spec test/*.test.mjs",
     "test:coverage": "c8 --all --src src --check-coverage --lines 100 --functions 100 --statements 100 --branches 95 node --test test/adapters.test.mjs test/router.test.mjs test/search-tool.test.mjs test/security.test.mjs test/tokenize.test.mjs",
     "test:types": "node scripts/test-types.mjs",
+    "test:examples": "node examples/openai-responses.mjs && node examples/openai-chat.mjs && node examples/anthropic.mjs && node examples/gemini.mjs && node examples/mcp.mjs && node examples/dynamic-catalog.mjs && node examples/large-catalog.mjs",
     "test:package": "node --test test/package.test.mjs && node scripts/check-dist.mjs && publint",
     "test:install": "node scripts/smoke-install.mjs",
     "test:docs": "npm run docs:build && node scripts/check-docs.mjs",
