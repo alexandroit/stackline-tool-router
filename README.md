@@ -1,20 +1,78 @@
 # @stackline/tool-router
 
-[![npm version](https://img.shields.io/npm/v/@stackline/tool-router.svg)](https://www.npmjs.com/package/@stackline/tool-router)
-[![npm downloads](https://img.shields.io/npm/dm/@stackline/tool-router.svg)](https://www.npmjs.com/package/@stackline/tool-router)
-[![CI](https://github.com/alexandroit/stackline-tool-router/actions/workflows/ci.yml/badge.svg)](https://github.com/alexandroit/stackline-tool-router/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/alexandroit/stackline-tool-router/actions/workflows/codeql.yml/badge.svg)](https://github.com/alexandroit/stackline-tool-router/actions/workflows/codeql.yml)
-[![license](https://img.shields.io/npm/l/@stackline/tool-router.svg)](LICENSE)
+> Zero-dependency AI tool discovery and routing for MCP, OpenAI, Anthropic, and Gemini catalogs
+
+[![npm version](https://img.shields.io/npm/v/@stackline/tool-router.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/tool-router)
+[![license](https://img.shields.io/npm/l/@stackline/tool-router.svg?style=flat-square)](https://github.com/alexandroit/stackline-tool-router/blob/main/LICENSE)
+[![GitHub repository](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github)](https://github.com/alexandroit/stackline-tool-router)
+
+**[Documentation](https://alexandro.net/docs/vanilla/tool-router/)** |
+**[npm](https://www.npmjs.com/package/@stackline/tool-router)** |
+**[Issues](https://github.com/alexandroit/stackline-tool-router/issues)** |
+**[Repository](https://github.com/alexandroit/stackline-tool-router)**
+
+**Package version:** `1.0.2`
+
+## Why this package?
 
 Route a user request to the smallest relevant subset of an AI tool catalog.
 The router is local, deterministic, zero-dependency, and understands MCP,
 OpenAI, Anthropic, Gemini, and provider-neutral definitions.
 
+<a id="why-route-tools"></a>
+
+### Why route tools
+
+Large tool catalogs create three practical problems:
+
+- definitions consume context before the task starts;
+- similar tools become harder for a model to distinguish;
+- sending every schema increases request size, latency, and cost.
+
+`@stackline/tool-router` builds an in-memory BM25F-style index over names,
+namespaces, aliases, tags, descriptions, and JSON Schema text. It adds bounded
+prefix matching, typo tolerance, uppercase acronym recognition, and a small
+action-synonym layer. Literal name and namespace matches remain stronger than
+synonym matches.
+
+The router never calls a model, embedding endpoint, database, or network
+service. The same catalog and query produce the same ordering.
+
+## Compatibility
+
+| Item | Value |
+| --- | --- |
+| Package | `@stackline/tool-router@1.0.2` |
+| Node.js runtime | `>=14.17.0` |
+| CommonJS / primary entry | `./dist/index.cjs` |
+| ES module entry | `./dist/index.js` |
+| Type declarations | `./dist/index.d.ts` |
+
+- Node.js 14.17 and newer;
+- ESM and CommonJS;
+- browsers through the `StacklineToolRouter` global build;
+- TypeScript 3.9 through current releases;
+- Deno and Bun through the ESM build;
+- no runtime dependencies.
+
+Detailed runtime and declaration guarantees are in
+[docs/COMPATIBILITY.md](https://github.com/alexandroit/stackline-tool-router/blob/main/docs/COMPATIBILITY.md).
+
+## Installation
+
+```sh
+npm install @stackline/tool-router
+```
+
+## Usage
+
 ```bash
 npm install @stackline/tool-router
 ```
 
-## Quick start
+<a id="quick-start"></a>
+
+### Quick start
 
 ```js
 import { createToolRouter } from '@stackline/tool-router';
@@ -65,46 +123,9 @@ const response = await openai.responses.create({
 No provider SDK is required by the package. Route first, then pass
 `routed.tools` to the SDK already used by the application.
 
-## Why route tools
+<a id="search-and-route"></a>
 
-Large tool catalogs create three practical problems:
-
-- definitions consume context before the task starts;
-- similar tools become harder for a model to distinguish;
-- sending every schema increases request size, latency, and cost.
-
-`@stackline/tool-router` builds an in-memory BM25F-style index over names,
-namespaces, aliases, tags, descriptions, and JSON Schema text. It adds bounded
-prefix matching, typo tolerance, uppercase acronym recognition, and a small
-action-synonym layer. Literal name and namespace matches remain stronger than
-synonym matches.
-
-The router never calls a model, embedding endpoint, database, or network
-service. The same catalog and query produce the same ordering.
-
-## Supported definitions
-
-| Source | Recognized shape | Returned by `route()` |
-| --- | --- | --- |
-| MCP | `{ name, inputSchema }` | original MCP tool |
-| OpenAI Responses | `{ type: 'function', name, parameters }` | original Responses tool |
-| OpenAI Chat | `{ type: 'function', function: { ... } }` | original Chat tool |
-| Anthropic | `{ name, input_schema }` | original Anthropic tool |
-| Gemini | `{ name, parameters }` or `functionDeclarations` | original Gemini declaration |
-| Canonical | `{ name, inputSchema }` or `{ name, schema }` | original object |
-
-Provider envelopes are accepted directly:
-
-```js
-const openaiRouter = createToolRouter({ tools: openaiTools });
-const geminiRouter = createToolRouter({ functionDeclarations });
-```
-
-Keep one provider-compatible catalog per outbound request. The package
-normalizes definitions for retrieval; it does not rewrite JSON Schema dialects
-or convert one provider's wire format into another.
-
-## Search and route
+### Search and route
 
 Use `search` when ranking evidence matters:
 
@@ -151,7 +172,35 @@ Token counts are transparent estimates based on JSON character length divided
 by four. They are useful for relative budgets, not a replacement for a
 provider-specific tokenizer.
 
-## Dynamic catalogs
+## Features and Integrations
+
+<a id="supported-definitions"></a>
+
+### Supported definitions
+
+| Source | Recognized shape | Returned by `route()` |
+| --- | --- | --- |
+| MCP | `{ name, inputSchema }` | original MCP tool |
+| OpenAI Responses | `{ type: 'function', name, parameters }` | original Responses tool |
+| OpenAI Chat | `{ type: 'function', function: { ... } }` | original Chat tool |
+| Anthropic | `{ name, input_schema }` | original Anthropic tool |
+| Gemini | `{ name, parameters }` or `functionDeclarations` | original Gemini declaration |
+| Canonical | `{ name, inputSchema }` or `{ name, schema }` | original object |
+
+Provider envelopes are accepted directly:
+
+```js
+const openaiRouter = createToolRouter({ tools: openaiTools });
+const geminiRouter = createToolRouter({ functionDeclarations });
+```
+
+Keep one provider-compatible catalog per outbound request. The package
+normalizes definitions for retrieval; it does not rewrite JSON Schema dialects
+or convert one provider's wire format into another.
+
+<a id="dynamic-catalogs"></a>
+
+### Dynamic catalogs
 
 Updates maintain postings and document frequencies without rebuilding the
 router:
@@ -169,7 +218,9 @@ router.clear();
 By default, duplicate IDs throw `ERR_TOOL_DUPLICATE`. Tool IDs use an explicit
 `id` when present, otherwise `namespace:name`, otherwise `name`.
 
-## BYOT discovery helper
+<a id="byot-discovery-helper"></a>
+
+### BYOT discovery helper
 
 `createToolSearch` creates a compact search function and an executor for
 bring-your-own-tool discovery loops:
@@ -192,7 +243,9 @@ Targets are `canonical`, `mcp`, `openai-responses`, `openai-chat`,
 schemas. Applications decide how selected tools are admitted into the next
 model request.
 
-## Ranking controls
+<a id="ranking-controls"></a>
+
+### Ranking controls
 
 Default field weights favor intent-bearing identifiers:
 
@@ -234,7 +287,9 @@ const router = createToolRouter(tools, {
 Set `synonyms: false` for literal-only retrieval. Custom tokenizers are also
 supported and receive both indexed text and queries.
 
-## Catalog metadata
+<a id="catalog-metadata"></a>
+
+### Catalog metadata
 
 Canonical metadata improves routing without changing provider payloads:
 
@@ -253,27 +308,9 @@ const tool = {
 For provider definitions, metadata can be placed on the outer tool object.
 The original object is returned unchanged and by reference.
 
-## API
+<a id="evaluation-and-performance"></a>
 
-| Export | Purpose |
-| --- | --- |
-| `createToolRouter(tools, options)` | build a mutable in-memory router |
-| `router.search(query, options)` | ranked matches with evidence |
-| `router.select(query, options)` | original tool definitions only |
-| `router.route(query, options)` | selected tools plus budget metrics |
-| `router.add/remove/replace/clear` | update a live catalog |
-| `router.get/list/has/stats` | inspect the normalized catalog |
-| `routeTools(tools, query, options)` | one-shot routing helper |
-| `createToolSearch(router, options)` | provider-shaped discovery function |
-| `normalizeTool/normalizeTools` | inspect canonical retrieval records |
-| `detectToolFormat(tool)` | detect a supported provider shape |
-| `estimateToolTokens(tool)` | bounded provider-neutral size estimate |
-| `tokenize/normalizeText` | use the default text pipeline directly |
-
-Every validation error is a `ToolRouterError` with a stable `code` beginning
-with `ERR_TOOL_`.
-
-## Evaluation and performance
+### Evaluation and performance
 
 The repository includes the complete corpus and benchmark command:
 
@@ -293,7 +330,29 @@ catalog vocabulary, descriptions, aliases, and query distribution materially
 change the result. Run the included benchmark with representative tools before
 choosing production limits.
 
-## Security and limits
+<a id="documentation"></a>
+
+### Documentation
+
+- [Live routing workbench](https://alexandro.net/docs/vanilla/tool-router/)
+- [OpenAI, Anthropic, Gemini, and MCP integrations](https://github.com/alexandroit/stackline-tool-router/blob/main/docs/INTEGRATIONS.md)
+- [Evaluation and benchmark methodology](https://github.com/alexandroit/stackline-tool-router/blob/main/docs/BENCHMARKS.md)
+- [Executable provider examples](https://github.com/alexandroit/stackline-tool-router/blob/main/examples)
+- [Architecture](https://github.com/alexandroit/stackline-tool-router/blob/main/docs/ARCHITECTURE.md)
+- [Market research](https://github.com/alexandroit/stackline-tool-router/blob/main/docs/MARKET_RESEARCH.md)
+- [Stackline open-source catalog](https://alexandro.net/docs/open-source/)
+- [Changelog](https://github.com/alexandroit/stackline-tool-router/blob/main/CHANGELOG.md)
+- [Contributing](https://github.com/alexandroit/stackline-tool-router/blob/main/CONTRIBUTING.md)
+
+Examples are included in the npm tarball and build provider request objects
+without credentials or network calls. This makes format compatibility
+executable before an application connects its own SDK.
+
+## Security
+
+<a id="security-and-limits"></a>
+
+### Security and limits
 
 Tool definitions are untrusted input. The implementation:
 
@@ -308,37 +367,65 @@ Tool definitions are untrusted input. The implementation:
 - has zero runtime dependencies and performs no network access.
 
 Defaults are intended for ordinary provider schemas. Raise limits only for a
-catalog that has already been validated. See [SECURITY.md](SECURITY.md) for
+catalog that has already been validated. See [SECURITY.md](https://github.com/alexandroit/stackline-tool-router/blob/main/SECURITY.md) for
 private vulnerability reporting.
 
-## Compatibility
+## API Surface
 
-- Node.js 14.17 and newer;
-- ESM and CommonJS;
-- browsers through the `StacklineToolRouter` global build;
-- TypeScript 3.9 through current releases;
-- Deno and Bun through the ESM build;
-- no runtime dependencies.
+<a id="api"></a>
 
-Detailed runtime and declaration guarantees are in
-[docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
+### API
 
-## Documentation
+| Export | Purpose |
+| --- | --- |
+| `createToolRouter(tools, options)` | build a mutable in-memory router |
+| `router.search(query, options)` | ranked matches with evidence |
+| `router.select(query, options)` | original tool definitions only |
+| `router.route(query, options)` | selected tools plus budget metrics |
+| `router.add/remove/replace/clear` | update a live catalog |
+| `router.get/list/has/stats` | inspect the normalized catalog |
+| `routeTools(tools, query, options)` | one-shot routing helper |
+| `createToolSearch(router, options)` | provider-shaped discovery function |
+| `normalizeTool/normalizeTools` | inspect canonical retrieval records |
+| `detectToolFormat(tool)` | detect a supported provider shape |
+| `estimateToolTokens(tool)` | bounded provider-neutral size estimate |
+| `tokenize/normalizeText` | use the default text pipeline directly |
 
-- [Live routing workbench](https://alexandro.net/docs/vanilla/tool-router/)
-- [OpenAI, Anthropic, Gemini, and MCP integrations](docs/INTEGRATIONS.md)
-- [Evaluation and benchmark methodology](docs/BENCHMARKS.md)
-- [Executable provider examples](examples)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Market research](docs/MARKET_RESEARCH.md)
-- [Stackline open-source catalog](https://alexandro.net/docs/open-source/)
-- [Changelog](CHANGELOG.md)
-- [Contributing](CONTRIBUTING.md)
+Every validation error is a `ToolRouterError` with a stable `code` beginning
+with `ERR_TOOL_`.
 
-Examples are included in the npm tarball and build provider request objects
-without credentials or network calls. This makes format compatibility
-executable before an application connects its own SDK.
+## Local Development
+
+```sh
+git clone https://github.com/alexandroit/stackline-tool-router.git
+cd stackline-tool-router
+npm ci
+npm run test
+```
+
+Release tooling uses Node.js 24.20.0 and npm 11.19.0. The consumer runtime contract remains the one documented above.
+
+## Consumer Smoke Test
+
+Run the repository's existing consumer/package check after installing development dependencies:
+
+```sh
+npm run test:install
+```
+
+## Release Checklist
+
+Run `npm run test` and inspect the package contents before release. Publish a new version through the [GitHub Actions publishing workflow](https://github.com/alexandroit/stackline-tool-router/actions/workflows/publish.yml), using the SHA-512 digest of the reviewed tarball. Verify the exact published version, tarball integrity, and npm provenance after the run.
+
+## Community and Support
+
+Report reproducible package issues in the [issue tracker](https://github.com/alexandroit/stackline-tool-router/issues). Use the [security policy](https://github.com/alexandroit/stackline-tool-router/blob/main/SECURITY.md) for vulnerability reports.
+
+- [Stackline / Alexandro.Net](https://alexandro.net/)
+- [GitHub](https://github.com/alexandroit)
+- [Maintainer LinkedIn](https://www.linkedin.com/in/aleinfo/)
+- [Reddit community: r/Stackline](https://www.reddit.com/r/Stackline/)
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/alexandroit/stackline-tool-router/blob/main/LICENSE)

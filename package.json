@@ -1,6 +1,6 @@
 {
   "name": "@stackline/tool-router",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Zero-dependency AI tool discovery and routing for MCP, OpenAI, Anthropic, and Gemini catalogs",
   "keywords": [
     "ai",
@@ -16,7 +16,11 @@
     "gemini",
     "bm25",
     "typescript",
-    "zero-dependency"
+    "zero-dependency",
+    "stackline",
+    "tool-calling",
+    "routing",
+    "llm"
   ],
   "license": "MIT",
   "author": {
