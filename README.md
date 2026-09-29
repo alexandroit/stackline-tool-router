@@ -4,13 +4,13 @@
 
 [![npm version](https://img.shields.io/npm/v/@stackline/tool-router.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/tool-router)
 [![license](https://img.shields.io/npm/l/@stackline/tool-router.svg?style=flat-square)](https://github.com/alexandroit/stackline-tool-router)
-[![GitHub repository](https://img.shields.io/badge/GitHub-alexandroit%2Fstackline-tool-router-181717?style=flat-square&logo=github)](https://github.com/alexandroit/stackline-tool-router)
+[![GitHub repository](https://img.shields.io/badge/GitHub-repository-181717?style=flat-square&logo=github)](https://github.com/alexandroit/stackline-tool-router)
 [![Docs](https://img.shields.io/badge/docs-alexandro.net-0f766e?style=flat-square)](https://alexandro.net/docs/vanilla/tool-router/)
 [![Reddit community](https://img.shields.io/badge/community-r%2FStackline-ff4500?style=flat-square&logo=reddit&logoColor=white)](https://www.reddit.com/r/Stackline/)
 
 **[Documentation](https://alexandro.net/docs/vanilla/tool-router/)** | **[npm](https://www.npmjs.com/package/@stackline/tool-router)** | **[Issues](https://github.com/alexandroit/stackline-tool-router/issues)** | **[Repository](https://github.com/alexandroit/stackline-tool-router)**
 
-**Current package version:** `1.0.3`
+**Current package version:** `1.0.4`
 
 ---
 
@@ -43,7 +43,7 @@ service. The same catalog and query produce the same ordering.
 
 | Item | Value |
 | --- | --- |
-| Package | `@stackline/tool-router@1.0.3` |
+| Package | `@stackline/tool-router@1.0.4` |
 | Node.js runtime | `>=14.17.0` |
 | CommonJS / primary entry | `./dist/index.cjs` |
 | ES module entry | `./dist/index.js` |
