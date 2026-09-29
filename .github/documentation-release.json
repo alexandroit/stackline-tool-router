@@ -1,0 +1,38 @@
+{
+  "repository": "alexandroit/stackline-tool-router",
+  "packages": [
+    {
+      "name": "@stackline/tool-router",
+      "path": "README.md",
+      "version": "1.0.3",
+      "baselineVersion": "1.0.2",
+      "keywords": [
+        "stackline",
+        "npm-package",
+        "tool-router",
+        "typescript",
+        "nodejs",
+        "ai",
+        "agents",
+        "tool-routing",
+        "tool-search",
+        "tool-discovery",
+        "function-calling",
+        "mcp",
+        "model-context-protocol",
+        "openai",
+        "anthropic",
+        "gemini",
+        "bm25",
+        "zero-dependency",
+        "tool-calling",
+        "routing"
+      ],
+      "homepage": "https://alexandro.net/docs/vanilla/tool-router/",
+      "baselineTarball": "https://registry.npmjs.org/@stackline/tool-router/-/tool-router-1.0.2.tgz",
+      "baselineIntegrity": "sha512-4sIhsMS/NX+lNbi/bb3tho8odmQtBgELGuBpVz0QMPVoEHf233jB0fRlqSh/l3+cv5FnQ/bUca6cpiauNtSBjQ==",
+      "expectedSha512": "3a8cfb9e117ce0a5d6525b13cd17daa781f95279a33f787d417d58f84ccfe7273d9d1fc8ddbebe87eb4bbe576073777ebd61d87543a5d2e02c814ac4973f2412",
+      "tag": "docs-stackline-tool-router-v1.0.3"
+    }
+  ]
+}
