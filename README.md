@@ -1,17 +1,18 @@
 # @stackline/tool-router
 
-> Zero-dependency AI tool discovery and routing for MCP, OpenAI, Anthropic, and Gemini catalogs
+> Zero-dependency AI tool discovery and routing for MCP, OpenAI, Anthropic, and Gemini catalogs.
 
 [![npm version](https://img.shields.io/npm/v/@stackline/tool-router.svg?style=flat-square)](https://www.npmjs.com/package/@stackline/tool-router)
-[![license](https://img.shields.io/npm/l/@stackline/tool-router.svg?style=flat-square)](https://github.com/alexandroit/stackline-tool-router/blob/main/LICENSE)
-[![GitHub repository](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github)](https://github.com/alexandroit/stackline-tool-router)
+[![license](https://img.shields.io/npm/l/@stackline/tool-router.svg?style=flat-square)](https://github.com/alexandroit/stackline-tool-router)
+[![GitHub repository](https://img.shields.io/badge/GitHub-alexandroit%2Fstackline-tool-router-181717?style=flat-square&logo=github)](https://github.com/alexandroit/stackline-tool-router)
+[![Docs](https://img.shields.io/badge/docs-alexandro.net-0f766e?style=flat-square)](https://alexandro.net/docs/vanilla/tool-router/)
+[![Reddit community](https://img.shields.io/badge/community-r%2FStackline-ff4500?style=flat-square&logo=reddit&logoColor=white)](https://www.reddit.com/r/Stackline/)
 
-**[Documentation](https://alexandro.net/docs/vanilla/tool-router/)** |
-**[npm](https://www.npmjs.com/package/@stackline/tool-router)** |
-**[Issues](https://github.com/alexandroit/stackline-tool-router/issues)** |
-**[Repository](https://github.com/alexandroit/stackline-tool-router)**
+**[Documentation](https://alexandro.net/docs/vanilla/tool-router/)** | **[npm](https://www.npmjs.com/package/@stackline/tool-router)** | **[Issues](https://github.com/alexandroit/stackline-tool-router/issues)** | **[Repository](https://github.com/alexandroit/stackline-tool-router)**
 
-**Package version:** `1.0.2`
+**Current package version:** `1.0.3`
+
+---
 
 ## Why this package?
 
@@ -42,7 +43,7 @@ service. The same catalog and query produce the same ordering.
 
 | Item | Value |
 | --- | --- |
-| Package | `@stackline/tool-router@1.0.2` |
+| Package | `@stackline/tool-router@1.0.3` |
 | Node.js runtime | `>=14.17.0` |
 | CommonJS / primary entry | `./dist/index.cjs` |
 | ES module entry | `./dist/index.js` |
@@ -417,15 +418,24 @@ npm run test:install
 
 Run `npm run test` and inspect the package contents before release. Publish a new version through the [GitHub Actions publishing workflow](https://github.com/alexandroit/stackline-tool-router/actions/workflows/publish.yml), using the SHA-512 digest of the reviewed tarball. Verify the exact published version, tarball integrity, and npm provenance after the run.
 
-## Community and Support
-
-Report reproducible package issues in the [issue tracker](https://github.com/alexandroit/stackline-tool-router/issues). Use the [security policy](https://github.com/alexandroit/stackline-tool-router/blob/main/SECURITY.md) for vulnerability reports.
-
-- [Stackline / Alexandro.Net](https://alexandro.net/)
-- [GitHub](https://github.com/alexandroit)
-- [Maintainer LinkedIn](https://www.linkedin.com/in/aleinfo/)
-- [Reddit community: r/Stackline](https://www.reddit.com/r/Stackline/)
-
 ## License
 
 [MIT](https://github.com/alexandroit/stackline-tool-router/blob/main/LICENSE)
+
+## Credits and original authors
+
+- Alexandro Paixao Marques.
+- Copyright (c) 2026 Alexandro Paixao Marques.
+- Stackline maintenance: [Alexandro Paixao Marques](https://www.linkedin.com/in/aleinfo/) and [Stackline contributors](https://github.com/alexandroit).
+
+Original copyright, license notices and contributor acknowledgements remain part of this distribution. Stackline maintenance does not replace authorship of the original work.
+
+## Community and Links
+
+- [Stackline website](https://alexandro.net/)
+- [GitHub projects](https://github.com/alexandroit)
+- [npm packages](https://www.npmjs.com/~alex360qc)
+- [Reddit community — r/Stackline](https://www.reddit.com/r/Stackline/)
+- [Maintainer LinkedIn](https://www.linkedin.com/in/aleinfo/)
+
+Use this repository's issue tracker for reproducible bugs and feature requests. Join r/Stackline for examples, usage questions and release discussions.
