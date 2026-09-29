@@ -1,6 +1,6 @@
 {
   "name": "@stackline/tool-router",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Zero-dependency AI tool discovery and routing for MCP, OpenAI, Anthropic, and Gemini catalogs",
   "keywords": [
     "stackline",
