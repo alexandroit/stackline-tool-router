@@ -10,7 +10,7 @@
 
 **[Documentation](https://alexandro.net/docs/vanilla/tool-router/)** | **[npm](https://www.npmjs.com/package/@stackline/tool-router)** | **[Issues](https://github.com/alexandroit/stackline-tool-router/issues)** | **[Repository](https://github.com/alexandroit/stackline-tool-router)**
 
-**Current package version:** `1.0.4`
+**Current package version:** `1.0.5`
 
 ---
 
@@ -43,7 +43,7 @@ service. The same catalog and query produce the same ordering.
 
 | Item | Value |
 | --- | --- |
-| Package | `@stackline/tool-router@1.0.4` |
+| Package | `@stackline/tool-router@1.0.5` |
 | Node.js runtime | `>=14.17.0` |
 | CommonJS / primary entry | `./dist/index.cjs` |
 | ES module entry | `./dist/index.js` |
